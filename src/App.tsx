@@ -1,9 +1,11 @@
+
 function App() {
+
   return (
     <div className="App">
-        <p>
+        <h2>
           Modelo de Front React - Arquitetura Softkuka
-        </p>
+        </h2>
     </div>
   );
 }
