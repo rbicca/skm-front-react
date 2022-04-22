@@ -1,26 +1,21 @@
-
-import Loading from "../utils/Loading";
+import GenericList from "../utils/GenericList";
 import IndividualMovie from "./IndividualMovie";
 import { movieDTO } from "./movies.model";
-import css from './MoviesList.module.css';
+import css from "./MoviesList.module.css";
 
-export default function MoviesList(props: moviesListProps){
+export default function MoviesList(props: moviesListProps) {
 
-    if (!props.movies){
-        return <Loading />
-    } else if(props.movies.length === 0){
-        return <>Não existem filmes para exibir</>
-    } else {
-        return(
-            <div className={css.div}>
-                {props.movies.map(movie => 
-                    <IndividualMovie  key={movie.id} {...movie} />    
-                )}
-            </div>
-        );
-    }
+  return (
+    <GenericList list={props.movies} >
+      <div className={css.div}>
+        {props.movies?.map((movie) => (
+          <IndividualMovie key={movie.id} {...movie} />
+        ))}
+      </div>
+    </GenericList>
+  );
 }
 
-interface moviesListProps{
-    movies?: movieDTO[];
+interface moviesListProps {
+  movies?: movieDTO[];
 }
