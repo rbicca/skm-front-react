@@ -5,3 +5,7 @@ body {
   list-style:none;
   border:0    
 }
+
+form > a {
+  margin-left: 1rem;
+}
