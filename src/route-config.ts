@@ -22,14 +22,14 @@ const routes = [
 
     { path: '/actors', component: IndexActors, exact: true },
     { path: '/actors/create', component: CreateActor },
-    { path: '/actors/edit:id(\\d+)', component: EditActor},
+    { path: '/actors/edit/:id(\\d+)', component: EditActor},
 
     { path: '/movieTheaters', component: IndexMovieTheaters, exact: true },
     { path: '/movieTheaters/create', component: CreateMovieTheater },
     { path: '/movieTheaters/edit:id(\\d+)', component: EditMovieTheater},
 
     { path: '/movies/create', component: CreateMovie },
-    { path: '/movies/edit:id(\\d+)', component: EditMovie },
+    { path: '/movies/edit/:id(\\d+)', component: EditMovie },
     { path: '/movies/filter', component: FilterMovies},
 
     { path: '*', component: RedirectToLandingPage}
