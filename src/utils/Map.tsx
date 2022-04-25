@@ -16,7 +16,7 @@ L.Marker.prototype.options.icon = defaultIcon;
 
 export default function Map(props: mapProps){
 
-    const [coordinates, setCoordinates] = useState<coordinateDTO[]>([]);
+    const [coordinates, setCoordinates] = useState<coordinateDTO[]>(props.coordinates);
 
     return(
         <MapContainer
@@ -30,6 +30,7 @@ export default function Map(props: mapProps){
             />
             <MapClick setCoordinates={ coord => {
                 setCoordinates([coord]);
+                props.handleMapClick(coord);
             }}
             />
              {coordinates.map((c,i) => <Marker key={i} position={[c.lat, c.lng]}/> )}
@@ -39,6 +40,8 @@ export default function Map(props: mapProps){
 
 interface mapProps{
     height: string;
+    coordinates: coordinateDTO[];
+    handleMapClick(coordinates: coordinateDTO): void;
 }
 
 Map.defaultProps = {
