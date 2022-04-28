@@ -5,3 +5,10 @@ export interface actorCreationDTO{
     pictureURL?: string;
     biography?: string;
 }
+
+export interface actorMovieDTO{
+    id: number;
+    name: string;
+    caracter: string;
+    picture: string;   
+}
