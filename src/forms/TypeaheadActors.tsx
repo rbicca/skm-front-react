@@ -1,4 +1,5 @@
 import { Typeahead } from "react-bootstrap-typeahead";
+import { ReactElement } from "react-markdown/lib/react-markdown";
 import { actorMovieDTO } from "../actors/actors.model";
 
 export default function TypeaheadActors(props: typeaheadActorsProps){
@@ -9,20 +10,47 @@ export default function TypeaheadActors(props: typeaheadActorsProps){
         {id: 3, name:'Lauren German', caracter: '', picture:'https://tvebrasil.com.br/wp-content/uploads/2019/05/lauren-german-lucifer-netflix.jpg'},
     ];
 
+    const selected: actorMovieDTO[] = [];
+
     return (
         <div className="mb-3">
             <label>{props.displayName}</label>
             <Typeahead 
                 id="typehead"
-                onChange={actor => {
-                    console.log(actor);
+                onChange={actors => {
+                    if(actors.length > 0){
+                    if(props.actors.findIndex(x => x.id === actors[0].id) === -1) {
+                        props.onAdd([...props.actors, actors[0]]);
+                    }}
                 }}
                 options={actors}
                 labelKey={actor => actor.name}
                 filterBy={['name']}
                 placeholder="Escreva o nome do ator..."
                 minLength={1}
+                flip={true}
+                selected={selected}
+                renderMenuItemChildren={actor => (
+                    <>
+                        <img src={actor.picture} alt="actor" style={{height: '64px', width: '64px', marginRight: '10px'}}/>
+                        <span>{actor.name}</span>
+                    </>
+                )}
             />
+
+            <ul className="list-group">
+                {props.actors.map(actor => 
+                    <li key={actor.id} className="list-group-item list-group-item-action">
+                        {props.listUI(actor)}
+                        <span 
+                            className="badge badge-primary badge-pill pointer text-dark" 
+                            style={{marginLeft: '0.5 rem'}} 
+                            onClick={() => props.onRemove(actor)}
+                        >X</span>
+                    </li>
+                )}
+            </ul>
+
         </div>
     );
 }
@@ -30,4 +58,7 @@ export default function TypeaheadActors(props: typeaheadActorsProps){
 interface typeaheadActorsProps{
     displayName: string;
     actors: actorMovieDTO[];
+    onAdd(actors: actorMovieDTO[]): void;
+    onRemove(actor: actorMovieDTO): void;
+    listUI(actor: actorMovieDTO): ReactElement; 
 }

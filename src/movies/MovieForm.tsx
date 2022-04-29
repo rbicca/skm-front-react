@@ -12,6 +12,7 @@ import { useState } from "react";
 import { genreDTO } from "../genres/genres.model";
 import { movieTheaterDTO } from "../movieTheaters/movieTheater.model";
 import TypeaheadActors from "../forms/TypeaheadActors";
+import { actorMovieDTO } from "../actors/actors.model";
 
 export default function MovieForm(props: movieFormProps){
 
@@ -20,6 +21,8 @@ export default function MovieForm(props: movieFormProps){
 
     const[selectedMovieTheaters, setSelectedMoviesTheaters] = useState(mapToModel(props.selectedMovieTheaters));
     const[nonSelectedMovieTheaters, setNonSelectedMoviesTheaters] = useState(mapToModel(props.nonSelectedMovieTheaters));
+
+    const [selectedActors, setSelectedActors] = useState(props.selectedActors);
 
     function mapToModel(items: {id:number, name: string}[]): multipleSelectorModel[]{
         return items.map(item => { return{key: item.id, value: item.name}})
@@ -67,7 +70,34 @@ export default function MovieForm(props: movieFormProps){
                         }}
                     />
 
-                    <TypeaheadActors displayName="Atores" actors={[]} />
+                    <TypeaheadActors 
+                        displayName="Atores" 
+                        actors={selectedActors} 
+                        onAdd={actors => {
+                            setSelectedActors(actors);
+                        }}
+                        onRemove={actor => {
+                            const actors = selectedActors.filter(x => x !== actor);
+                            setSelectedActors(actors);
+                        }}
+                        listUI={(actor: actorMovieDTO) => 
+                            <>
+                                {actor.name} / <input 
+                                    placeholder="Personagem" 
+                                    type="text" 
+                                    value={actor.caracter} 
+                                    onChange={e => {
+                                        const index = selectedActors.findIndex(x => x.id === actor.id);
+                                        const actors = [...selectedActors];
+                                        actors[index].caracter = e.currentTarget.value;
+                                        setSelectedActors(actors);
+                                    }}
+                                />
+                            </>
+                        }
+                    />
+
+                    
 
                     <Button type="submit" disabled={formikProps.isSubmitting}>Salvar</Button>
                     <Link className="btn btn-secondary" to="/movies">Cancelar</Link>
@@ -85,4 +115,5 @@ interface movieFormProps{
     nonSelectedGenres: genreDTO[];
     selectedMovieTheaters: movieTheaterDTO[];
     nonSelectedMovieTheaters: movieTheaterDTO[];
+    selectedActors: actorMovieDTO[];
 }
