@@ -1,3 +1,4 @@
+import { actorMovieDTO } from "../actors/actors.model";
 import { genreDTO } from "../genres/genres.model";
 import { movieTheaterDTO } from "../movieTheaters/movieTheater.model";
 import MovieForm from "./MovieForm";
@@ -9,6 +10,10 @@ export default function EditMovie(){
 
     const nonSelectedMovieTheaters: movieTheaterDTO[] = [{id:2, name: 'Ritz'}];
     const selectedMovieTheaters: movieTheaterDTO[] = [{id: 1, name:'Baltimore'}];
+
+    const selectedActors: actorMovieDTO[] = [
+        {id: 1, name:'Jery Rian', caracter: '7 of 9', picture:'https://m.media-amazon.com/images/M/MV5BYTM4NTJlZjEtNjdiNS00Y2Y5LTlhYzMtNzVkMjU1MjZmNDE5XkEyXkFqcGdeQXVyMjEwODk5MDY@._V1_UY317_CR12,0,214,317_AL_.jpg'}
+    ];
 
     return (
         <>
@@ -24,7 +29,7 @@ export default function EditMovie(){
                 selectedGenres={selectedGenres}
                 nonSelectedMovieTheaters={nonSelectedMovieTheaters}
                 selectedMovieTheaters={selectedMovieTheaters}
-                selectedActors={[]}
+                selectedActors={selectedActors}
             />
 
         </>

@@ -35,7 +35,8 @@ export default function MovieForm(props: movieFormProps){
             onSubmit={(values, actions) => {
                 values.genresIds = selectedGenres.map(i => i.key);
                 values.movieTheatersIds = selectedMovieTheaters.map(i => i.key);
-
+                values.actors = selectedActors;
+                
                 props.onSubmit(values, actions);
             }}
             validationSchema={Yup.object({
