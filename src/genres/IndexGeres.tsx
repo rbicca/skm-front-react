@@ -7,22 +7,39 @@ import GenericList from "../utils/GenericList";
 import Button from "../utils/Button";
 import Pagination from "../utils/Pagination";
 import RecordsPerPageSelect from "../utils/RecordsPerPageSelect";
+import customConfirm from "../utils/customConfirm";
 
 export default function IndexGenres(){
 
     const [genres, setGenres] = useState<genreDTO[]>();
     const [totalAmountOfPages, setTotalAmountOfPages] = useState(0);
-    const [recordsPerPage, setRecordsPerPage] = useState(2);
+    const [recordsPerPage, setRecordsPerPage] = useState(5);
     const [page, setPage] = useState(1);
 
     useEffect( ()=> {
-        axios.get(urlGenres, { params: {page, recordsPerPage} })
-                .then( (response: AxiosResponse<genreDTO[]>) => {
-                    const totalAmountOfRecords = parseInt(response.headers["totalamountofrecords"],10);
-                    setTotalAmountOfPages(Math.ceil(totalAmountOfRecords / recordsPerPage));
-                    setGenres(response.data);
-                });
+        loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, recordsPerPage]);
+
+    function loadData(){
+        axios.get(urlGenres, { params: {page, recordsPerPage} })
+        .then( (response: AxiosResponse<genreDTO[]>) => {
+            const totalAmountOfRecords = parseInt(response.headers["totalamountofrecords"],10);
+            setTotalAmountOfPages(Math.ceil(totalAmountOfRecords / recordsPerPage));
+            setGenres(response.data);
+        });
+    }
+    
+    async function deleteGenre(id: number){
+        try{
+            await axios.delete(`${urlGenres}/${id}`);
+            loadData();
+        } catch(error){
+            if (error && error.response){
+                console.error(error.response.data);
+            }
+        }
+    }
 
     return (
         <>
@@ -49,8 +66,8 @@ export default function IndexGenres(){
                         <tr key={genre.id}>
                             <td>{genre.name}</td>
                             <td>
-                                <Link className="btn btn-success" to={`/genres/${genre.id}`}>Alterar</Link>
-                                <Button className="btn btn-danger">Excluir</Button>
+                                <Link className="btn btn-success" to={`/genres/edit/${genre.id}`}>Alterar</Link>
+                                <Button className="btn btn-danger" onClick={() => customConfirm(() => deleteGenre(genre.id))} >Excluir</Button>
                             </td>
                         </tr>)}
                     </tbody>
