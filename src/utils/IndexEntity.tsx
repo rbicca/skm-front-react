@@ -20,6 +20,7 @@ export default function IndexEntity<T>(props: indexEntityProps<T>){
     }, [page, recordsPerPage]);
 
     function loadData(){
+        console.log('aqui', props.url);
         axios.get(props.url, { params: {page, recordsPerPage} })
         .then( (response: AxiosResponse<T[]>) => {
             const totalAmountOfRecords = parseInt(response.headers["totalamountofrecords"],10);
